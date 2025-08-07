@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hub de Inteligência Artificial</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+
+        :root {
+            --background-start: #e6f7ff;
+            --background-end: #ffffff;
+            --card-background: rgba(255, 255, 255, 0.45);
+            --card-border: rgba(0, 0, 0, 0.1);
+            --text-primary: #0d253f;
+            --text-secondary: #3c5a7a;
+            --accent-color: #0077ff;
+            --shadow-color: rgba(0, 119, 255, 0.2);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(45deg, var(--background-start), var(--background-end));
+            background-size: 200% 200%;
+            animation: gradientFlow 10s ease infinite;
+            color: var(--text-primary);
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            text-align: center;
+            padding: 20px;
+        }
+
+        @keyframes gradientFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .container {
+            max-width: 1100px;
+            width: 100%;
+        }
+
+        .main-title {
+            font-size: clamp(2.5rem, 5vw, 3.2rem);
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 15px;
+        }
+
+        .subtitle {
+            font-size: clamp(1rem, 2.5vw, 1.25rem);
+            font-weight: 300;
+            color: var(--text-secondary);
+            margin-bottom: 60px;
+        }
+
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 35px;
+        }
+
+        .card {
+            background: var(--card-background);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 35px;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            text-decoration: none;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 220px;
+        }
+
+        .card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 15px 35px var(--shadow-color);
+        }
+
+        .card-logo {
+            width: 80px;
+            height: 80px;
+            margin-bottom: 25px;
+            object-fit: contain;
+        }
+
+        .card-title {
+            font-size: 1.6rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1 class="main-title">Inteligência Artificial</h1>
+        <p class="subtitle"></p>
+
+        <div class="card-grid">
+            <a href="https://notebooklm.google.com/" target="_blank" class="card">
+                <img src="https://static1.xdaimages.com/wordpress/wp-content/uploads/2025/03/notebooklm-removebg-preview.png" alt="Logo NotebookLM" class="card-logo">
+                <h2 class="card-title">NotebookLM</h2>
+            </a>
+
+            <a href="https://jules.google.com/task" target="_blank" class="card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvAXEz4EsU3RQHCV96BAfJusei09ZBjQOG2g&s" alt="Logo Jules" class="card-logo">
+                <h2 class="card-title">Jules</h2>
+            </a>
+
+            <a href="https://gemini.google.com/app" target="_blank" class="card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThr7qrIazsvZwJuw-uZCtLzIjaAyVW_ZrlEQ&s" alt="Logo Gemini" class="card-logo">
+                <h2 class="card-title">Gemini</h2>
+            </a>
+
+            <a href="https://chatgpt.com/" target="_blank" class="card">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMdM9MEQ0ExL1PmInT3U5I8v63YXBEdoIT0Q&s" alt="Logo ChatGPT" class="card-logo">
+                <h2 class="card-title">ChatGPT</h2>
+            </a>
+        </div>
+    </div>
+
+</body>
+</html>
