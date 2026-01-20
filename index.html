@@ -5,31 +5,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inteligência Artificial</title>
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
 
         :root {
             --background-start: #e6f7ff;
             --background-end: #ffffff;
-            --card-background: rgba(255, 255, 255, 0.45);
-            --card-border: rgba(0, 0, 0, 0.1);
+            --card-background: rgba(255, 255, 255, 0.8);
+            --card-border: rgba(0, 0, 0, 0.08);
             --text-primary: #0d253f;
             --text-secondary: #3c5a7a;
             --accent-color: #0077ff;
-            --shadow-color: rgba(0, 119, 255, 0.2);
+            --accent-light: #e6f2ff;
+            --shadow-color: rgba(0, 119, 255, 0.15);
+            --tab-inactive: #f0f8ff;
+            --category-text: #1a365d;
+            --category-bg: #ebf5ff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
-            background: linear-gradient(45deg, var(--background-start), var(--background-end));
-            background-size: 200% 200%;
-            animation: gradientFlow 10s ease infinite;
+            background: linear-gradient(135deg, var(--background-start), var(--background-end));
+            background-size: 400% 400%;
+            animation: gradientFlow 15s ease infinite;
             color: var(--text-primary);
-            margin: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
             min-height: 100vh;
-            text-align: center;
             padding: 20px;
         }
 
@@ -40,130 +45,489 @@
         }
 
         .container {
-            max-width: 1100px;
-            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px 0;
         }
 
         .main-title {
-            font-size: clamp(2.5rem, 5vw, 3.2rem);
-            font-weight: 600;
-            color: var(--text-primary);
-            margin-bottom: 15px;
+            font-size: clamp(2.8rem, 6vw, 3.5rem);
+            font-weight: 700;
+            background: linear-gradient(135deg, #0077ff, #00c6ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+            letter-spacing: -0.5px;
         }
 
         .subtitle {
-            font-size: clamp(1rem, 2.5vw, 1.25rem);
-            font-weight: 300;
+            font-size: clamp(1rem, 2.5vw, 1.3rem);
+            font-weight: 400;
             color: var(--text-secondary);
-            margin-bottom: 60px;
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.6;
+        }
+
+        .category-badge {
+            display: inline-block;
+            padding: 8px 20px;
+            background: var(--category-bg);
+            color: var(--category-text);
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 0.9rem;
+            margin-bottom: 30px;
+            border: 1px solid rgba(0, 119, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .tabs-container {
+            margin-bottom: 40px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .tabs {
+            display: inline-flex;
+            gap: 10px;
+            background: rgba(255, 255, 255, 0.7);
+            padding: 8px;
+            border-radius: 16px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+            min-width: min-content;
+        }
+
+        .tab {
+            padding: 12px 28px;
+            border: none;
+            background: transparent;
+            color: var(--text-secondary);
+            font-family: 'Poppins', sans-serif;
+            font-size: 1rem;
+            font-weight: 500;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .tab:hover {
+            background: var(--accent-light);
+            color: var(--accent-color);
+        }
+
+        .tab.active {
+            background: var(--accent-color);
+            color: white;
+            box-shadow: 0 4px 12px var(--shadow-color);
+        }
+
+        .categories-grid {
+            display: grid;
+            gap: 40px;
+        }
+
+        .category-section {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 24px;
+            padding: 30px;
+            backdrop-filter: blur(15px);
+            border: 1px solid var(--card-border);
+            box-shadow: 0 8px 32px rgba(0, 119, 255, 0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .category-section:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 119, 255, 0.1);
+        }
+
+        .category-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid rgba(0, 119, 255, 0.1);
+        }
+
+        .category-icon {
+            width: 50px;
+            height: 50px;
+            background: linear-gradient(135deg, var(--accent-color), #00c6ff);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 1.5rem;
+        }
+
+        .category-title {
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .category-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-top: 5px;
         }
 
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 35px;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
         }
 
         .card {
             background: var(--card-background);
             border: 1px solid var(--card-border);
-            border-radius: 20px;
-            padding: 35px;
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border-radius: 18px;
+            padding: 25px;
             text-decoration: none;
             display: flex;
             flex-direction: column;
             align-items: center;
-            justify-content: center;
-            min-height: 220px;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+            min-height: 180px;
+        }
+
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-color), #00c6ff);
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .card:hover {
-            transform: translateY(-12px);
+            transform: translateY(-8px);
             box-shadow: 0 15px 35px var(--shadow-color);
+            border-color: rgba(0, 119, 255, 0.2);
+        }
+
+        .card:hover::before {
+            opacity: 1;
         }
 
         .card-logo {
-            width: 80px;
-            height: 80px;
-            margin-bottom: 25px;
+            width: 70px;
+            height: 70px;
+            margin-bottom: 20px;
             object-fit: contain;
+            transition: transform 0.3s ease;
+            border-radius: 12px;
+            padding: 5px;
+            background: white;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover .card-logo {
+            transform: scale(1.1);
         }
 
         .card-title {
-            font-size: 1.6rem;
+            font-size: 1.3rem;
             font-weight: 600;
             color: var(--text-primary);
-            margin: 0;
+            margin-bottom: 8px;
+            text-align: center;
         }
 
+        .card-tag {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            background: rgba(0, 119, 255, 0.1);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-weight: 500;
+            margin-top: auto;
+        }
+
+        .counter {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 30px;
+            font-weight: 500;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid rgba(0, 0, 0, 0.1);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        /* Responsividade */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .category-section {
+                padding: 20px;
+            }
+            
+            .card-grid {
+                grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+                gap: 20px;
+            }
+            
+            .tabs {
+                width: 100%;
+                justify-content: flex-start;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .category-header {
+                flex-direction: column;
+                text-align: center;
+                gap: 10px;
+            }
+            
+            .tab {
+                padding: 10px 20px;
+                font-size: 0.9rem;
+            }
+        }
     </style>
 </head>
 <body>
-
     <div class="container">
-        <h1 class="main-title">Inteligência Artificial</h1>
-        <p class="subtitle"></p>
+        <header class="header">
+            <h1 class="main-title">Inteligência Artificial</h1>
+            <p class="subtitle">Explore as mais avançadas ferramentas de IA organizadas por categoria para facilitar sua busca</p>
+            <div class="category-badge" id="totalCounter">Total: 13 ferramentas</div>
+        </header>
 
-        <div class="card-grid">
-            <a href="https://gemini.google.com/app" target="_blank" class="card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThr7qrIazsvZwJuw-uZCtLzIjaAyVW_ZrlEQ&s" alt="Logo Gemini" class="card-logo">
-                <h2 class="card-title">Gemini</h2>
-            </a>
+        <div class="tabs-container">
+            <div class="tabs" id="categoryTabs">
+                <button class="tab active" data-category="all">Todas (13)</button>
+                <button class="tab" data-category="chat">Chat (5)</button>
+                <button class="tab" data-category="creative">Criativas (4)</button>
+                <button class="tab" data-category="video">Vídeo (2)</button>
+                <button class="tab" data-category="productivity">Produtividade (2)</button>
+            </div>
+        </div>
 
-            <a href="https://chatgpt.com/" target="_blank" class="card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMdM9MEQ0ExL1PmInT3U5I8v63YXBEdoIT0Q&s" alt="Logo ChatGPT" class="card-logo">
-                <h2 class="card-title">ChatGPT</h2>
-            </a>
+        <div class="categories-grid" id="categoriesContainer">
+            <!-- Categoria: Chat e Assistência -->
+            <div class="category-section" data-category="chat">
+                <div class="category-header">
+                    <div class="category-icon">💬</div>
+                    <div>
+                        <h2 class="category-title">Chat e Assistência</h2>
+                        <p class="category-description">Assistentes de IA para conversação, pesquisa e suporte</p>
+                    </div>
+                </div>
+                <div class="card-grid">
+                    <a href="https://chatgpt.com/" target="_blank" class="card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMdM9MEQ0ExL1PmInT3U5I8v63YXBEdoIT0Q&s" alt="ChatGPT" class="card-logo">
+                        <h3 class="card-title">ChatGPT</h3>
+                        <span class="card-tag">Assistente Geral</span>
+                    </a>
 
-            <a href="https://copilot.microsoft.com/chats/nWzzWyERLi8Df2n6UXGJ9" target="_blank" class="card">
-                <img src="https://play-lh.googleusercontent.com/p8R1lAZI5_WCOzmvBYnOQasCWcjc9d2vM7z4PaVku8b9AfxGhqQqM0ldJ8KULHblVj-g" alt="Logo Copilot" class="card-logo">
-                <h2 class="card-title">Copilot</h2>
-            </a>
+                    <a href="https://gemini.google.com/app" target="_blank" class="card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcThr7qrIazsvZwJuw-uZCtLzIjaAyVW_ZrlEQ&s" alt="Gemini" class="card-logo">
+                        <h3 class="card-title">Gemini</h3>
+                        <span class="card-tag">Google Assistant</span>
+                    </a>
 
-            <a href="https://chat.deepseek.com/" target="_blank" class="card">
-                <img src="https://cdn.worldvectorlogo.com/logos/deepseek-2.svg" alt="Logo Deepseek" class="card-logo">
-                <h2 class="card-title">Deepseek</h2>
-            </a>
-            
-            <a href="https://notebooklm.google.com/" target="_blank" class="card">
-                <img src="https://static1.xdaimages.com/wordpress/wp-content/uploads/2025/03/notebooklm-removebg-preview.png" alt="Logo NotebookLM" class="card-logo">
-                <h2 class="card-title">NotebookLM</h2>
-            </a>
+                    <a href="https://copilot.microsoft.com/chats/nWzzWyERLi8Df2n6UXGJ9" target="_blank" class="card">
+                        <img src="https://play-lh.googleusercontent.com/p8R1lAZI5_WCOzmvBYnOQasCWcjc9d2vM7z4PaVku8b9AfxGhqQqM0ldJ8KULHblVj-g" alt="Copilot" class="card-logo">
+                        <h3 class="card-title">Copilot</h3>
+                        <span class="card-tag">Microsoft AI</span>
+                    </a>
 
-             <a href="https://lmarena.ai/?mode=direct" target="_blank" class="card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxPgTgdL2Ttbt9TCA8vYFPsFOqz_Dppec8gg&s" alt="Logo Deepseek" class="card-logo">
-                <h2 class="card-title">LM Arena</h2>
-            </a>
+                    <a href="https://chat.deepseek.com/" target="_blank" class="card">
+                        <img src="https://cdn.worldvectorlogo.com/logos/deepseek-2.svg" alt="Deepseek" class="card-logo">
+                        <h3 class="card-title">Deepseek</h3>
+                        <span class="card-tag">Coding Assistant</span>
+                    </a>
 
-             <a href="https://manus.im/app" target="_blank" class="card">
-                <img src="https://play-lh.googleusercontent.com/7RIeDBEnjVVn3d1yr441p7u0BK9eT8E6P9i__XYTcJAzOe7sqVgJp7pmlypqY9NBqjI" alt="Logo Manus" class="card-logo">
-                <h2 class="card-title">Manus AI</h2>
-            </a> 
+                    <a href="https://qwen.ai/home" target="_blank" class="card">
+                        <img src="https://crystalpng.com/wp-content/uploads/2025/02/Qwen-05.png" alt="Qwen" class="card-logo">
+                        <h3 class="card-title">Qwen</h3>
+                        <span class="card-tag">Alibaba AI</span>
+                    </a>
+                </div>
+            </div>
 
-            <a href="https://workspace.google.com/intl/pt-BR/products/vids/" target="_blank" class="card">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Google_Vids_2024_Logo.svg/250px-Google_Vids_2024_Logo.svg.png" alt="Logo Vids" class="card-logo">
-                <h2 class="card-title">Vids</h2>
-            </a>
+            <!-- Categoria: Ferramentas Criativas -->
+            <div class="category-section" data-category="creative">
+                <div class="category-header">
+                    <div class="category-icon">🎨</div>
+                    <div>
+                        <h2 class="category-title">Ferramentas Criativas</h2>
+                        <p class="category-description">IA para música, design e conteúdo criativo</p>
+                    </div>
+                </div>
+                <div class="card-grid">
+                    <a href="https://suno.com/" target="_blank" class="card">
+                        <img src="https://images.seeklogo.com/logo-png/52/2/suno-ai-logo-png_seeklogo-528379.png" alt="Suno" class="card-logo">
+                        <h3 class="card-title">Suno</h3>
+                        <span class="card-tag">Geração de Música</span>
+                    </a>
 
-             <a href="https://suno.com/" target="_blank" class="card">
-                <img src="https://images.seeklogo.com/logo-png/52/2/suno-ai-logo-png_seeklogo-528379.png" alt="Logo Deepseek" class="card-logo">
-                <h2 class="card-title">Suno</h2>
-            </a>
+                    <a href="https://jules.google.com/task" target="_blank" class="card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvAXEz4EsU3RQHCV96BAfJusei09ZBjQOG2g&s" alt="Jules" class="card-logo">
+                        <h3 class="card-title">Jules</h3>
+                        <span class="card-tag">Geração de Imagens</span>
+                    </a>
 
-            <a href="https://jules.google.com/task" target="_blank" class="card">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvAXEz4EsU3RQHCV96BAfJusei09ZBjQOG2g&s" alt="Logo Jules" class="card-logo">
-                <h2 class="card-title">Jules</h2>
-            </a>           
+                    <a href="https://manus.im/app" target="_blank" class="card">
+                        <img src="https://play-lh.googleusercontent.com/7RIeDBEnjVVn3d1yr441p7u0BK9eT8E6P9i__XYTcJAzOe7sqVgJp7pmlypqY9NBqjI" alt="Manus AI" class="card-logo">
+                        <h3 class="card-title">Manus AI</h3>
+                        <span class="card-tag">Design e Edição</span>
+                    </a>
 
-            <a href="https://www.perplexity.ai/" target="_blank" class="card">
-                <img src="https://images.seeklogo.com/logo-png/61/2/perplexity-ai-icon-black-logo-png_seeklogo-611679.png" alt="Logo Perplexity" class="card-logo">
-                <h2 class="card-title">Perplexity</h2>
-            </a>
+                    <a href="https://lmarena.ai/?mode=direct" target="_blank" class="card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQxPgTgdL2Ttbt9TCA8vYFPsFOqz_Dppec8gg&s" alt="LM Arena" class="card-logo">
+                        <h3 class="card-title">LM Arena</h3>
+                        <span class="card-tag">Comparação de LLMs</span>
+                    </a>
+                </div>
+            </div>
 
-          </div>
+            <!-- Categoria: Vídeo e Multimídia -->
+            <div class="category-section" data-category="video">
+                <div class="category-header">
+                    <div class="category-icon">🎥</div>
+                    <div>
+                        <h2 class="category-title">Vídeo e Multimídia</h2>
+                        <p class="category-description">IA para criação e edição de vídeo</p>
+                    </div>
+                </div>
+                <div class="card-grid">
+                    <a href="https://create.wan.video/" target="_blank" class="card">
+                        <img src="https://catai.com.br/wp-content/uploads/2025/08/Wan-01.jpg" alt="Wan" class="card-logo">
+                        <h3 class="card-title">Wan</h3>
+                        <span class="card-tag">Criação de Vídeo</span>
+                    </a>
+
+                    <a href="https://workspace.google.com/intl/pt-BR/products/vids/" target="_blank" class="card">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Google_Vids_2024_Logo.svg/250px-Google_Vids_2024_Logo.svg.png" alt="Vids" class="card-logo">
+                        <h3 class="card-title">Vids</h3>
+                        <span class="card-tag">Google Videos</span>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Categoria: Produtividade -->
+            <div class="category-section" data-category="productivity">
+                <div class="category-header">
+                    <div class="category-icon">⚡</div>
+                    <div>
+                        <h2 class="category-title">Produtividade</h2>
+                        <p class="category-description">Ferramentas para aumentar eficiência e organização</p>
+                    </div>
+                </div>
+                <div class="card-grid">
+                    <a href="https://www.perplexity.ai/" target="_blank" class="card">
+                        <img src="https://images.seeklogo.com/logo-png/61/2/perplexity-ai-icon-black-logo-png_seeklogo-611679.png" alt="Perplexity" class="card-logo">
+                        <h3 class="card-title">Perplexity</h3>
+                        <span class="card-tag">Busca com IA</span>
+                    </a>
+
+                    <a href="https://notebooklm.google.com/" target="_blank" class="card">
+                        <img src="https://static1.xdaimages.com/wordpress/wp-content/uploads/2025/03/notebooklm-removebg-preview.png" alt="NotebookLM" class="card-logo">
+                        <h3 class="card-title">NotebookLM</h3>
+                        <span class="card-tag">Organização de Notas</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <footer class="footer">
+            <p>© 2024 Inteligência Artificial - Organização por categoria</p>
+        </footer>
     </div>
-  </body>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const tabs = document.querySelectorAll('.tab');
+            const categorySections = document.querySelectorAll('.category-section');
+            
+            // Contador de ferramentas
+            const totalCards = document.querySelectorAll('.card').length;
+            document.getElementById('totalCounter').textContent = `Total: ${totalCards} ferramentas`;
+            
+            // Atualizar contadores das tabs
+            tabs.forEach(tab => {
+                const category = tab.dataset.category;
+                if (category !== 'all') {
+                    const count = document.querySelectorAll(`[data-category="${category}"] .card`).length;
+                    tab.textContent = `${tab.textContent.split('(')[0]}(${count})`;
+                }
+            });
+
+            // Filtro por categoria
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Ativar tab clicada
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    
+                    const selectedCategory = tab.dataset.category;
+                    
+                    // Mostrar/ocultar categorias
+                    categorySections.forEach(section => {
+                        if (selectedCategory === 'all' || section.dataset.category === selectedCategory) {
+                            section.style.display = 'block';
+                            setTimeout(() => {
+                                section.style.opacity = '1';
+                                section.style.transform = 'translateY(0)';
+                            }, 10);
+                        } else {
+                            section.style.opacity = '0';
+                            section.style.transform = 'translateY(20px)';
+                            setTimeout(() => {
+                                section.style.display = 'none';
+                            }, 300);
+                        }
+                    });
+                });
+            });
+            
+            // Animação inicial
+            categorySections.forEach((section, index) => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(20px)';
+                section.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                
+                setTimeout(() => {
+                    section.style.opacity = '1';
+                    section.style.transform = 'translateY(0)';
+                }, 100 * index);
+            });
+        });
+    </script>
+</body>
 </html>
