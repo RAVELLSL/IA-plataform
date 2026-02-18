@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Inteligência Artificial · Diretório de Ferramentas</title>
+    <title>Diretório de Ferramentas IA</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap');
 
@@ -13,6 +13,7 @@
             box-sizing: border-box;
         }
 
+        /* Tema claro (padrão) */
         :root {
             --bg-gradient-from: #e6f7ff;
             --bg-gradient-to: #ffffff;
@@ -26,7 +27,27 @@
             --accent-soft: #e6f2ff;
             --shadow-sm: 0 4px 12px rgba(0, 119, 255, 0.08);
             --shadow-hover: 0 12px 24px rgba(0, 119, 255, 0.12);
+            --icon-favorite: #ffb700;
+            --icon-favorite-inactive: #ccc;
             --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+
+        /* Tema escuro */
+        body.dark-theme {
+            --bg-gradient-from: #0a1929;
+            --bg-gradient-to: #1a2a3a;
+            --surface: rgba(30, 40, 50, 0.85);
+            --surface-hover: rgba(40, 55, 70, 0.95);
+            --border-light: rgba(255, 255, 255, 0.1);
+            --border-accent: rgba(100, 180, 255, 0.3);
+            --text-primary: #e3f0ff;
+            --text-secondary: #b0c8e0;
+            --accent: #4da6ff;
+            --accent-soft: #1e3a5a;
+            --shadow-sm: 0 4px 12px rgba(0, 150, 255, 0.15);
+            --shadow-hover: 0 12px 24px rgba(0, 150, 255, 0.25);
+            --icon-favorite: #ffd966;
+            --icon-favorite-inactive: #5f6b7a;
         }
 
         body {
@@ -36,6 +57,7 @@
             padding: 24px 20px;
             color: var(--text-primary);
             line-height: 1.5;
+            transition: background 0.2s, color 0.2s;
         }
 
         .container {
@@ -67,7 +89,7 @@
             margin: 0 auto 24px;
         }
 
-        /* Barra de ferramentas (busca + abas) */
+        /* Barra de ferramentas */
         .toolbar {
             background: var(--surface);
             backdrop-filter: blur(12px);
@@ -92,6 +114,7 @@
             background: rgba(255,255,255,0.8);
             transition: all 0.2s ease;
             box-shadow: inset 0 2px 6px rgba(0,0,0,0.02);
+            color: var(--text-primary);
         }
 
         .search-box:focus {
@@ -101,11 +124,21 @@
             background: white;
         }
 
+        /* Linha de controles (abas + ordenação + tema + top5) */
+        .controls-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            justify-content: space-between;
+        }
+
         .tabs {
             display: flex;
             flex-wrap: wrap;
             gap: 8px;
-            justify-content: center;
+            flex: 2;
+            min-width: 240px;
         }
 
         .tab {
@@ -132,6 +165,53 @@
             color: white;
             box-shadow: 0 4px 12px rgba(0,119,255,0.3);
             border-color: transparent;
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .sort-controls {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            background: var(--surface);
+            padding: 4px;
+            border-radius: 40px;
+            border: 1px solid var(--border-light);
+        }
+
+        .sort-btn, .theme-btn, .top5-btn {
+            background: transparent;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 40px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            white-space: nowrap;
+        }
+
+        .sort-btn.active, .top5-btn.active {
+            background: var(--accent);
+            color: white;
+        }
+
+        .theme-btn {
+            background: var(--surface);
+            border: 1px solid var(--border-light);
+        }
+
+        .theme-btn:hover, .sort-btn:hover:not(.active), .top5-btn:hover:not(.active) {
+            background: var(--accent-soft);
+            color: var(--accent);
         }
 
         /* Contador de resultados */
@@ -187,6 +267,7 @@
             transition: all 0.25s ease;
             box-shadow: var(--shadow-sm);
             position: relative;
+            cursor: pointer; /* Indica que o card é clicável */
         }
 
         .tool-item:hover {
@@ -194,6 +275,24 @@
             border-color: var(--border-accent);
             box-shadow: var(--shadow-hover);
             transform: translateY(-2px);
+        }
+
+        .favorite-icon {
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--icon-favorite-inactive);
+            transition: color 0.2s, transform 0.1s;
+            margin-right: 8px;
+            user-select: none;
+            z-index: 2; /* Garante que fique acima do clique do card */
+        }
+
+        .favorite-icon.active {
+            color: var(--icon-favorite);
+        }
+
+        .favorite-icon:hover {
+            transform: scale(1.1);
         }
 
         .tool-logo {
@@ -205,11 +304,13 @@
             object-fit: contain;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             flex-shrink: 0;
+            pointer-events: none; /* Evita interferir no clique do card */
         }
 
         .tool-info {
             flex: 1;
             min-width: 0;
+            pointer-events: none; /* O texto não deve bloquear o clique */
         }
 
         .tool-header {
@@ -245,19 +346,21 @@
             display: -webkit-box;
             -webkit-line-clamp: 2;
             -webkit-box-orient: vertical;
+            line-clamp: 2; /* Propriedade padrão para compatibilidade */
             overflow: hidden;
             line-height: 1.5;
         }
 
         .tool-action {
             flex-shrink: 0;
+            pointer-events: none; /* O botão será clicado via JavaScript, não precisa de eventos diretos */
         }
 
         .tool-link {
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            background: white;
+            background: var(--surface);
             border: 1px solid var(--border-light);
             border-radius: 40px;
             padding: 10px 22px;
@@ -267,24 +370,15 @@
             font-size: 0.95rem;
             transition: all 0.2s ease;
             box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+            pointer-events: none; /* Desabilita o clique direto no link, será manipulado pelo card */
         }
 
-        .tool-link:hover {
-            background: var(--accent);
-            border-color: var(--accent);
-            color: white;
+        .tool-link i::before {
+            content: "↗";
+            font-style: normal;
+            font-size: 1.2rem;
         }
 
-        .tool-link i {
-            font-size: 1.1rem;
-            transition: transform 0.15s;
-        }
-
-        .tool-link:hover i {
-            transform: translate(3px, -2px);
-        }
-
-        /* Mensagem quando não há resultados */
         .no-results {
             text-align: center;
             padding: 48px 20px;
@@ -305,35 +399,36 @@
             font-size: 0.9rem;
         }
 
-        /* Responsividade */
         @media (max-width: 700px) {
             .tool-item {
                 flex-wrap: wrap;
             }
-
             .tool-logo {
                 width: 48px;
                 height: 48px;
             }
-
             .tool-action {
                 width: 100%;
             }
-
             .tool-link {
                 width: 100%;
                 justify-content: center;
             }
-
             .tabs {
                 flex-wrap: nowrap;
                 overflow-x: auto;
                 padding-bottom: 4px;
                 justify-content: flex-start;
             }
-
             .tab {
                 flex-shrink: 0;
+            }
+            .controls-row {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            .action-buttons {
+                justify-content: center;
             }
         }
 
@@ -343,13 +438,6 @@
                 align-items: flex-start;
                 gap: 6px;
             }
-        }
-
-        /* Ícone de seta simples (usando entidade) */
-        .tool-link i::before {
-            content: "↗";
-            font-style: normal;
-            font-size: 1.2rem;
         }
     </style>
 </head>
@@ -364,12 +452,24 @@
             <div class="search-wrapper">
                 <input type="text" class="search-box" id="searchInput" placeholder="Buscar ferramentas por nome ou descrição...">
             </div>
-            <div class="tabs" id="categoryTabs">
-                <button class="tab active" data-category="all">Todas</button>
-                <button class="tab" data-category="chat">Chat</button>
-                <button class="tab" data-category="creative">Criativas</button>
-                <button class="tab" data-category="video">Vídeo</button>
-                <button class="tab" data-category="productivity">Produtividade</button>
+            
+            <div class="controls-row">
+                <div class="tabs" id="categoryTabs">
+                    <button class="tab active" data-category="all">Todas</button>
+                    <button class="tab" data-category="chat">Chat</button>
+                    <button class="tab" data-category="creative">Criativas</button>
+                    <button class="tab" data-category="video">Vídeo</button>
+                    <button class="tab" data-category="productivity">Produtividade</button>
+                </div>
+
+                <div class="action-buttons">
+                    <div class="sort-controls">
+                        <button class="sort-btn active" data-sort="alpha">A-Z</button>
+                        <button class="sort-btn" data-sort="favorite">⭐ Favoritos</button>
+                    </div>
+                    <button class="top5-btn" id="top5Btn">🔥 Top 5</button>
+                    <button class="theme-btn" id="themeToggle">🌓 Tema</button>
+                </div>
             </div>
         </div>
 
@@ -394,6 +494,7 @@
                 { name: "Copilot", logo: "https://play-lh.googleusercontent.com/p8R1lAZI5_WCOzmvBYnOQasCWcjc9d2vM7z4PaVku8b9AfxGhqQqM0ldJ8KULHblVj-g", category: "chat", description: "Assistente da Microsoft para código, texto e busca.", url: "https://copilot.microsoft.com/" },
                 { name: "Deepseek", logo: "https://cdn.worldvectorlogo.com/logos/deepseek-2.svg", category: "chat", description: "Focado em programação e raciocínio lógico profundo.", url: "https://chat.deepseek.com/" },
                 { name: "Qwen", logo: "https://crystalpng.com/wp-content/uploads/2025/02/Qwen-05.png", category: "chat", description: "Modelo da Alibaba para tarefas diversas e suporte multilíngue.", url: "https://qwen.ai/home" },
+                { name: "Grok", logo: "https://img.icons8.com/color/1200/grok--v2.jpg", category: "chat", description: "Assistente de IA da xAI com respostas diretas e atualizadas.", url: "https://grok.com/" },
                 { name: "Suno", logo: "https://images.seeklogo.com/logo-png/52/2/suno-ai-logo-png_seeklogo-528379.png", category: "creative", description: "Criação de músicas e áudio com IA generativa.", url: "https://suno.com/" },
                 { name: "Jules", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvAXEz4EsU3RQHCV96BAfJusei09ZBjQOG2g&s", category: "creative", description: "Geração e edição de imagens por comandos de texto.", url: "https://jules.google.com/task" },
                 { name: "Manus AI", logo: "https://play-lh.googleusercontent.com/7RIeDBEnjVVn3d1yr441p7u0BK9eT8E6P9i__XYTcJAzOe7sqVgJp7pmlypqY9NBqjI", category: "creative", description: "Design gráfico e edição profissional com IA.", url: "https://manus.im/app" },
@@ -404,7 +505,6 @@
                 { name: "NotebookLM", logo: "https://static1.xdaimages.com/wordpress/wp-content/uploads/2025/03/notebooklm-removebg-preview.png", category: "productivity", description: "Organização de notas e resumos com base nos seus documentos.", url: "https://notebooklm.google.com/" }
             ];
 
-            // Mapeamento de categorias para exibição amigável
             const categoryNames = {
                 all: "Todas",
                 chat: "Chat",
@@ -419,18 +519,51 @@
             const tabs = document.querySelectorAll('.tab');
             const resultCountSpan = document.getElementById('resultCount');
             const clearBtn = document.getElementById('clearFilters');
+            const sortBtns = document.querySelectorAll('.sort-btn');
+            const themeToggle = document.getElementById('themeToggle');
+            const top5Btn = document.getElementById('top5Btn');
 
-            // Estado atual
+            // Estado
             let activeCategory = 'all';
             let searchTerm = '';
+            let sortMode = 'alpha'; // 'alpha' ou 'favorite'
+            let top5Mode = false;    // se true, mostra apenas as 5 mais usadas
+            let favorites = JSON.parse(localStorage.getItem('iaFavorites')) || {};
+            let usageCount = JSON.parse(localStorage.getItem('iaUsageCount')) || {};
 
-            // ---------- FUNÇÕES DE RENDERIZAÇÃO ----------
+            // Tema
+            const savedTheme = localStorage.getItem('theme') || 'light';
+            if (savedTheme === 'dark') {
+                document.body.classList.add('dark-theme');
+            }
+
+            // ---------- FUNÇÕES ----------
+            function saveFavorites() {
+                localStorage.setItem('iaFavorites', JSON.stringify(favorites));
+            }
+
+            function saveUsageCount() {
+                localStorage.setItem('iaUsageCount', JSON.stringify(usageCount));
+            }
+
+            function incrementUsage(toolName) {
+                usageCount[toolName] = (usageCount[toolName] || 0) + 1;
+                saveUsageCount();
+            }
+
+            function toggleFavorite(toolName) {
+                if (favorites[toolName]) {
+                    delete favorites[toolName];
+                } else {
+                    favorites[toolName] = true;
+                }
+                saveFavorites();
+                renderList();
+            }
+
             function filterTools() {
                 return tools.filter(tool => {
-                    // Filtro por categoria
                     if (activeCategory !== 'all' && tool.category !== activeCategory) return false;
-
-                    // Filtro por texto (case insensitive)
                     if (searchTerm.trim() !== '') {
                         const term = searchTerm.toLowerCase();
                         return tool.name.toLowerCase().includes(term) || tool.description.toLowerCase().includes(term);
@@ -439,20 +572,49 @@
                 });
             }
 
+            function sortTools(toolsArray) {
+                let sorted = [...toolsArray];
+                if (top5Mode) {
+                    // Ordena por uso (decrescente) e pega os 5 primeiros
+                    sorted.sort((a, b) => (usageCount[b.name] || 0) - (usageCount[a.name] || 0));
+                    return sorted.slice(0, 5);
+                } else {
+                    if (sortMode === 'alpha') {
+                        sorted.sort((a, b) => a.name.localeCompare(b.name));
+                    } else if (sortMode === 'favorite') {
+                        sorted.sort((a, b) => {
+                            const aFav = favorites[a.name] ? 1 : 0;
+                            const bFav = favorites[b.name] ? 1 : 0;
+                            if (aFav !== bFav) return bFav - aFav;
+                            return a.name.localeCompare(b.name);
+                        });
+                    }
+                    return sorted;
+                }
+            }
+
+            function handleCardClick(toolName, url) {
+                incrementUsage(toolName);
+                window.open(url, '_blank');
+            }
+
             function renderList() {
                 const filtered = filterTools();
-                resultCountSpan.textContent = filtered.length;
+                const sorted = sortTools(filtered);
+                resultCountSpan.textContent = sorted.length;
 
-                if (filtered.length === 0) {
+                if (sorted.length === 0) {
                     toolsListEl.innerHTML = `<div class="no-results">Nenhuma ferramenta encontrada com os filtros atuais.</div>`;
                     return;
                 }
 
                 let html = '';
-                filtered.forEach(tool => {
+                sorted.forEach(tool => {
+                    const isFav = favorites[tool.name] || false;
                     html += `
-                        <div class="tool-item" data-category="${tool.category}">
-                            <img src="${tool.logo}" alt="${tool.name}" class="tool-logo" loading="lazy">
+                        <div class="tool-item" data-tool="${tool.name}" data-url="${tool.url}">
+                            <span class="favorite-icon ${isFav ? 'active' : ''}" data-tool="${tool.name}">${isFav ? '⭐' : '☆'}</span>
+                            <img src="${tool.logo}" alt="${tool.name}" class="tool-logo" loading="lazy" onerror="this.src='https://via.placeholder.com/56?text=IA'">
                             <div class="tool-info">
                                 <div class="tool-header">
                                     <span class="tool-name">${tool.name}</span>
@@ -461,73 +623,124 @@
                                 <div class="tool-description">${tool.description}</div>
                             </div>
                             <div class="tool-action">
-                                <a href="${tool.url}" target="_blank" class="tool-link" rel="noopener">
+                                <span class="tool-link">
                                     <span>Acessar</span>
                                     <i aria-hidden="true"></i>
-                                </a>
+                                </span>
                             </div>
                         </div>
                     `;
                 });
 
                 toolsListEl.innerHTML = html;
-            }
 
-            // ---------- ATUALIZAR ABAS ATIVAS ----------
-            function setActiveTab(category) {
-                tabs.forEach(tab => {
-                    const tabCat = tab.dataset.category;
-                    if (tabCat === category) {
-                        tab.classList.add('active');
-                    } else {
-                        tab.classList.remove('active');
-                    }
+                // Adiciona eventos de clique nos cards (exceto na estrela)
+                document.querySelectorAll('.tool-item').forEach(card => {
+                    card.addEventListener('click', (e) => {
+                        // Se o clique foi na estrela, não abrir o link
+                        if (e.target.classList.contains('favorite-icon') || e.target.parentElement?.classList.contains('favorite-icon')) {
+                            return;
+                        }
+                        const toolName = card.dataset.tool;
+                        const url = card.dataset.url;
+                        handleCardClick(toolName, url);
+                    });
+                });
+
+                // Eventos nas estrelas
+                document.querySelectorAll('.favorite-icon').forEach(star => {
+                    star.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        const toolName = star.dataset.tool;
+                        toggleFavorite(toolName);
+                    });
                 });
             }
 
+            function setActiveTab(category) {
+                tabs.forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.category === category);
+                });
+            }
+
+            function setActiveSort(mode) {
+                sortBtns.forEach(btn => {
+                    btn.classList.toggle('active', btn.dataset.sort === mode);
+                });
+            }
+
+            function setTop5Mode(active) {
+                top5Mode = active;
+                top5Btn.classList.toggle('active', active);
+                // Quando ativa o Top 5, desativa visualmente os botões de ordenação (mas mantém o estado)
+                sortBtns.forEach(btn => {
+                    btn.style.opacity = active ? '0.5' : '1';
+                    btn.style.pointerEvents = active ? 'none' : 'auto';
+                });
+                renderList();
+            }
+
             // ---------- EVENTOS ----------
-            // Clique nas abas
             tabs.forEach(tab => {
                 tab.addEventListener('click', (e) => {
-                    const category = e.currentTarget.dataset.category;
-                    activeCategory = category;
-                    setActiveTab(category);
+                    activeCategory = e.currentTarget.dataset.category;
+                    setActiveTab(activeCategory);
                     renderList();
                 });
             });
 
-            // Busca em tempo real
             searchInput.addEventListener('input', (e) => {
                 searchTerm = e.target.value;
                 renderList();
             });
 
-            // Botão limpar filtros
             clearBtn.addEventListener('click', () => {
                 searchInput.value = '';
                 searchTerm = '';
                 activeCategory = 'all';
                 setActiveTab('all');
+                if (top5Mode) setTop5Mode(false);
                 renderList();
             });
 
-            // Inicialização: garantir aba correta e renderizar
-            setActiveTab('all');
-            renderList();
-
-            // Pequeno detalhe: contagem total na aba "Todas" (opcional, mas legal)
-            const allTab = document.querySelector('.tab[data-category="all"]');
-            if (allTab) {
-                allTab.textContent = `Todas (${tools.length})`;
-            }
-            // Atualizar outras abas com contagem
-            tabs.forEach(tab => {
-                const cat = tab.dataset.category;
-                if (cat !== 'all') {
-                    const count = tools.filter(t => t.category === cat).length;
-                    tab.textContent = `${categoryNames[cat] || cat} (${count})`;
-                }
+            sortBtns.forEach(btn => {
+                btn.addEventListener('click', () => {
+                    if (top5Mode) setTop5Mode(false); // desativa Top 5 ao escolher ordenação
+                    sortMode = btn.dataset.sort;
+                    setActiveSort(sortMode);
+                    renderList();
+                });
             });
+
+            top5Btn.addEventListener('click', () => {
+                setTop5Mode(!top5Mode);
+            });
+
+            themeToggle.addEventListener('click', () => {
+                document.body.classList.toggle('dark-theme');
+                const isDark = document.body.classList.contains('dark-theme');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+
+            // Inicialização
+            function init() {
+                setActiveTab('all');
+                setActiveSort('alpha');
+                setTop5Mode(false);
+                // Atualizar contagem nas abas
+                const allTab = document.querySelector('.tab[data-category="all"]');
+                if (allTab) allTab.textContent = `Todas (${tools.length})`;
+                tabs.forEach(tab => {
+                    const cat = tab.dataset.category;
+                    if (cat !== 'all') {
+                        const count = tools.filter(t => t.category === cat).length;
+                        tab.textContent = `${categoryNames[cat] || cat} (${count})`;
+                    }
+                });
+                renderList();
+            }
+
+            init();
         })();
     </script>
 </body>
