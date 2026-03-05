@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Diretório de Ferramentas IA · MINIMAL</title>
+    <title>Ferramentas de IA · prof. Ravell</title>
     <style>
         /* ===== ESTILO MINIMALISTA - GRID 3 COLUNAS ===== */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
@@ -454,7 +454,7 @@
         <div class="tools-list" id="toolsList"></div>
 
         <footer class="footer">
-            <p>© 2025 · Diretório de IA · Atualizado regularmente</p>
+            <p>© 2026 · Atualizado regularmente!</p>
         </footer>
     </div>
 
@@ -468,7 +468,6 @@
                 { name: "Deepseek", logo: "https://cdn.worldvectorlogo.com/logos/deepseek-2.svg", category: "chat", description: "Focado em programação e raciocínio lógico profundo.", url: "https://chat.deepseek.com/" },
                 { name: "Qwen", logo: "https://crystalpng.com/wp-content/uploads/2025/02/Qwen-05.png", category: "chat", description: "Modelo da Alibaba para tarefas diversas e suporte multilíngue.", url: "https://qwen.ai/home" },
                 { name: "Grok", logo: "https://img.icons8.com/color/1200/grok--v2.jpg", category: "chat", description: "Assistente de IA da xAI com respostas diretas e atualizadas.", url: "https://grok.com/" },
-                // NOVO: Claude
                 { name: "Claude", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnM91o7r1wba01xcHW15PLqbe-ONaTIjOO3g&s", category: "chat", description: "Assistente de IA da Anthropic, especializado em conversas seguras e detalhadas.", url: "https://claude.ai/new" },
                 { name: "Suno", logo: "https://images.seeklogo.com/logo-png/52/2/suno-ai-logo-png_seeklogo-528379.png", category: "creative", description: "Criação de músicas e áudio com IA generativa.", url: "https://suno.com/" },
                 { name: "Jules", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvAXEz4EsU3RQHCV96BAfJusei09ZBjQOG2g&s", category: "creative", description: "Geração e edição de imagens por comandos de texto.", url: "https://jules.google.com/task" },
@@ -478,8 +477,8 @@
                 { name: "Vids", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Google_Vids_2024_Logo.svg/250px-Google_Vids_2024_Logo.svg.png", category: "video", description: "Ferramenta do Google Workspace para edição e criação de vídeos.", url: "https://workspace.google.com/intl/pt-BR/products/vids/" },
                 { name: "Perplexity", logo: "https://images.seeklogo.com/logo-png/61/2/perplexity-ai-icon-black-logo-png_seeklogo-611679.png", category: "productivity", description: "Mecanismo de busca com respostas geradas por IA.", url: "https://www.perplexity.ai/" },
                 { name: "NotebookLM", logo: "https://static1.xdaimages.com/wordpress/wp-content/uploads/2025/03/notebooklm-removebg-preview.png", category: "productivity", description: "Organização de notas e resumos com base nos seus documentos.", url: "https://notebooklm.google.com/" },
-                // NOVO: Google AI Studio
-                { name: "Google AI Studio", logo: "https://pbs.twimg.com/profile_images/1957558782067896323/6jXpPKD4_400x400.png", category: "productivity", description: "Plataforma para desenvolver e testar modelos de IA do Google, com acesso a APIs e ferramentas.", url: "https://aistudio.google.com/?project=gen-lang-client-0962495001" }
+                { name: "Google AI Studio", logo: "https://pbs.twimg.com/profile_images/1957558782067896323/6jXpPKD4_400x400.png", category: "productivity", description: "Plataforma para desenvolver e testar modelos de IA do Google, com acesso a APIs e ferramentas.", url: "https://aistudio.google.com/?project=gen-lang-client-0962495001" },
+                { name: "AI Free Forever", logo: "https://aifreeforever.com/logo.png", category: "productivity", description: "Plataforma com acesso gratuito a diversas ferramentas de IA para produtividade e criatividade.", url: "https://aifreeforever.com/" }
             ];
 
             const categoryNames = {
@@ -503,16 +502,11 @@
             // Estado
             let activeCategory = 'all';
             let searchTerm = '';
-            let sortMode = 'alpha'; // 'alpha' ou 'favorite'
-            let top5Mode = false;    // se true, mostra apenas as 5 mais usadas
+            let sortMode = 'alpha'; // 'alpha' ou 'favorite' (agora 'favorite' é apenas para ordenação, mas será substituído pelo filtro)
+            let favoriteFilterActive = false; // NOVO: filtro de favoritos
+            let top5Mode = false;
             let favorites = JSON.parse(localStorage.getItem('iaFavorites')) || {};
             let usageCount = JSON.parse(localStorage.getItem('iaUsageCount')) || {};
-
-            // Tema (apenas claro - removi o seletor de tema escuro para manter tonalidades claras)
-            // Mas mantive o botão de tema caso queira, mas removi a classe dark-theme para não escurecer
-            // Para simplificar, vou desabilitar a troca de tema escuro e manter sempre claro.
-            // Vou comentar a parte do themeToggle e remover o botão da interface.
-            // Mas para não quebrar, vou apenas esconder o botão com CSS.
 
             // ---------- FUNÇÕES ----------
             function saveFavorites() {
@@ -540,11 +534,15 @@
 
             function filterTools() {
                 return tools.filter(tool => {
+                    // Filtro por categoria
                     if (activeCategory !== 'all' && tool.category !== activeCategory) return false;
+                    // Filtro por busca
                     if (searchTerm.trim() !== '') {
                         const term = searchTerm.toLowerCase();
-                        return tool.name.toLowerCase().includes(term) || tool.description.toLowerCase().includes(term);
+                        if (!tool.name.toLowerCase().includes(term) && !tool.description.toLowerCase().includes(term)) return false;
                     }
+                    // NOVO: Filtro por favoritos
+                    if (favoriteFilterActive && !favorites[tool.name]) return false;
                     return true;
                 });
             }
@@ -558,6 +556,7 @@
                     if (sortMode === 'alpha') {
                         sorted.sort((a, b) => a.name.localeCompare(b.name));
                     } else if (sortMode === 'favorite') {
+                        // Ordenação por favoritos (coloca os favoritos primeiro)
                         sorted.sort((a, b) => {
                             const aFav = favorites[a.name] ? 1 : 0;
                             const bFav = favorites[b.name] ? 1 : 0;
@@ -640,7 +639,11 @@
 
             function setActiveSort(mode) {
                 sortBtns.forEach(btn => {
-                    btn.classList.toggle('active', btn.dataset.sort === mode);
+                    if (btn.dataset.sort === mode) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
                 });
             }
 
@@ -652,6 +655,14 @@
                     btn.style.pointerEvents = active ? 'none' : 'auto';
                 });
                 renderList();
+            }
+
+            // NOVO: Atualiza o estado do botão de filtro de favoritos
+            function updateFavoriteFilterButton() {
+                const favBtn = document.querySelector('.sort-btn[data-sort="favorite"]');
+                if (favBtn) {
+                    favBtn.classList.toggle('active', favoriteFilterActive);
+                }
             }
 
             // ---------- EVENTOS ----------
@@ -672,17 +683,34 @@
                 searchInput.value = '';
                 searchTerm = '';
                 activeCategory = 'all';
+                favoriteFilterActive = false; // limpa filtro de favoritos
                 setActiveTab('all');
                 if (top5Mode) setTop5Mode(false);
+                updateFavoriteFilterButton();
                 renderList();
             });
 
             sortBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     if (top5Mode) setTop5Mode(false);
-                    sortMode = btn.dataset.sort;
-                    setActiveSort(sortMode);
-                    renderList();
+
+                    const sortValue = btn.dataset.sort;
+
+                    if (sortValue === 'alpha') {
+                        sortMode = 'alpha';
+                        setActiveSort('alpha');
+                        renderList();
+                    } else if (sortValue === 'favorite') {
+                        // NOVO: Comportamento de filtro de favoritos
+                        favoriteFilterActive = !favoriteFilterActive;
+                        // Se ativar o filtro e o modo de ordenação for 'favorite', muda para alpha (para não conflitar)
+                        if (favoriteFilterActive && sortMode === 'favorite') {
+                            sortMode = 'alpha';
+                            setActiveSort('alpha');
+                        }
+                        updateFavoriteFilterButton();
+                        renderList();
+                    }
                 });
             });
 
@@ -691,7 +719,6 @@
             });
 
             // Removendo funcionalidade do tema para manter sempre claro
-            // O botão themeToggle será escondido via CSS (display: none)
             themeToggle.style.display = 'none';
 
             // Inicialização
@@ -699,6 +726,9 @@
                 setActiveTab('all');
                 setActiveSort('alpha');
                 setTop5Mode(false);
+                favoriteFilterActive = false;
+                updateFavoriteFilterButton();
+
                 // Atualizar contagem nas abas
                 const allTab = document.querySelector('.tab[data-category="all"]');
                 if (allTab) allTab.textContent = `Todas (${tools.length})`;
