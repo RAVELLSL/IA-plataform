@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -469,6 +468,8 @@
                 { name: "Deepseek", logo: "https://cdn.worldvectorlogo.com/logos/deepseek-2.svg", category: "chat", description: "Focado em programação e raciocínio lógico profundo.", url: "https://chat.deepseek.com/" },
                 { name: "Qwen", logo: "https://crystalpng.com/wp-content/uploads/2025/02/Qwen-05.png", category: "chat", description: "Modelo da Alibaba para tarefas diversas e suporte multilíngue.", url: "https://qwen.ai/home" },
                 { name: "Grok", logo: "https://img.icons8.com/color/1200/grok--v2.jpg", category: "chat", description: "Assistente de IA da xAI com respostas diretas e atualizadas.", url: "https://grok.com/" },
+                // NOVO: Claude
+                { name: "Claude", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnM91o7r1wba01xcHW15PLqbe-ONaTIjOO3g&s", category: "chat", description: "Assistente de IA da Anthropic, especializado em conversas seguras e detalhadas.", url: "https://claude.ai/new" },
                 { name: "Suno", logo: "https://images.seeklogo.com/logo-png/52/2/suno-ai-logo-png_seeklogo-528379.png", category: "creative", description: "Criação de músicas e áudio com IA generativa.", url: "https://suno.com/" },
                 { name: "Jules", logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQvAXEz4EsU3RQHCV96BAfJusei09ZBjQOG2g&s", category: "creative", description: "Geração e edição de imagens por comandos de texto.", url: "https://jules.google.com/task" },
                 { name: "Manus AI", logo: "https://play-lh.googleusercontent.com/7RIeDBEnjVVn3d1yr441p7u0BK9eT8E6P9i__XYTcJAzOe7sqVgJp7pmlypqY9NBqjI", category: "creative", description: "Design gráfico e edição profissional com IA.", url: "https://manus.im/app" },
@@ -476,7 +477,9 @@
                 { name: "Wan", logo: "https://catai.com.br/wp-content/uploads/2025/08/Wan-01.jpg", category: "video", description: "Criação automática de vídeos a partir de roteiros.", url: "https://create.wan.video/" },
                 { name: "Vids", logo: "https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Google_Vids_2024_Logo.svg/250px-Google_Vids_2024_Logo.svg.png", category: "video", description: "Ferramenta do Google Workspace para edição e criação de vídeos.", url: "https://workspace.google.com/intl/pt-BR/products/vids/" },
                 { name: "Perplexity", logo: "https://images.seeklogo.com/logo-png/61/2/perplexity-ai-icon-black-logo-png_seeklogo-611679.png", category: "productivity", description: "Mecanismo de busca com respostas geradas por IA.", url: "https://www.perplexity.ai/" },
-                { name: "NotebookLM", logo: "https://static1.xdaimages.com/wordpress/wp-content/uploads/2025/03/notebooklm-removebg-preview.png", category: "productivity", description: "Organização de notas e resumos com base nos seus documentos.", url: "https://notebooklm.google.com/" }
+                { name: "NotebookLM", logo: "https://static1.xdaimages.com/wordpress/wp-content/uploads/2025/03/notebooklm-removebg-preview.png", category: "productivity", description: "Organização de notas e resumos com base nos seus documentos.", url: "https://notebooklm.google.com/" },
+                // NOVO: Google AI Studio
+                { name: "Google AI Studio", logo: "https://pbs.twimg.com/profile_images/1957558782067896323/6jXpPKD4_400x400.png", category: "productivity", description: "Plataforma para desenvolver e testar modelos de IA do Google, com acesso a APIs e ferramentas.", url: "https://aistudio.google.com/?project=gen-lang-client-0962495001" }
             ];
 
             const categoryNames = {
@@ -507,11 +510,7 @@
 
             // Tema (apenas claro - removi o seletor de tema escuro para manter tonalidades claras)
             // Mas mantive o botão de tema caso queira, mas removi a classe dark-theme para não escurecer
-            // Se quiser remover o botão, pode apagar. Vou manter apenas o ícone, mas sem funcionalidade escura.
             // Para simplificar, vou desabilitar a troca de tema escuro e manter sempre claro.
-            // Mas vou deixar o botão lá, e ao clicar, ele não faz nada (ou apenas simula um toggle, mas sem mudar cores).
-            // Melhor: removo a funcionalidade de tema escuro e deixo apenas o botão como decorativo? Não, vou manter o botão, mas sem efeito de escuro.
-            // Na verdade, o usuário pediu tonalidades claras, então vamos fixar o tema claro e remover o themeToggle.
             // Vou comentar a parte do themeToggle e remover o botão da interface.
             // Mas para não quebrar, vou apenas esconder o botão com CSS.
 
