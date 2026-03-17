@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -428,19 +429,28 @@
                 padding: 8px 20px;
             }
 
+            /* === AJUSTE DAS ABAS PARA 2 LINHAS DE 3 COLUNAS === */
             .tabs {
-                flex-wrap: nowrap;
-                overflow-x: auto;
-                padding-bottom: 8px; /* Mais espaço para scroll */
-                -webkit-overflow-scrolling: touch; /* Scroll suave no iOS */
-                scrollbar-width: thin; /* Scroll mais fino no Firefox */
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+                overflow: visible;
+                padding-bottom: 8px;
+                flex: none; /* Remove o flex anterior */
+                width: 100%; /* Garante que ocupe toda a largura */
             }
 
             .tab {
-                flex-shrink: 0;
-                font-size: 0.85rem; /* Texto um pouco menor nas abas */
-                padding: 6px 14px;
+                flex-shrink: 1;
+                width: 100%;
+                padding: 8px 4px;
+                font-size: 0.85rem;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden;
+                text-align: center;
             }
+            /* ================================================= */
 
             .controls-row {
                 flex-direction: column;
